@@ -49,6 +49,10 @@ Always return the final answer to the user in a friendly, conversational way, pr
 # 4. Create the LangGraph Agent
 agent_executor = create_react_agent(llm, tools, prompt=system_prompt)
 
+@app.get("/")
+async def root():
+    return {"message": "TailorTalk API is actively running! The agent endpoint is located at /chat"}
+
 # 5. Create the API Endpoint
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
