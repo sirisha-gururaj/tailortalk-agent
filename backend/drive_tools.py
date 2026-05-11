@@ -4,7 +4,10 @@ from googleapiclient.discovery import build
 from langchain_core.tools import tool
 
 # This points to the secret key you downloaded earlier
-CREDENTIALS_FILE = os.path.join("credentials", "service_account.json")
+if os.path.exists("service_account.json"):
+    CREDENTIALS_FILE = "service_account.json"
+else:
+    CREDENTIALS_FILE = os.path.join("credentials", "service_account.json")
 
 def get_drive_service():
     """Authenticates using the service account and returns the Drive API service."""
