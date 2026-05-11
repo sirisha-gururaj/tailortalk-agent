@@ -39,6 +39,7 @@ CRITICAL RULES FOR GENERATING 'q' PARAMETERS:
    - PDFs: mimeType = 'application/pdf'
    - Word Docs: mimeType contains 'application/vnd.openxmlformats-officedocument'
 5. File Assumptions: NEVER assume a file type based on words like "invoice" or "menu". Only filter by mimeType if the user explicitly asks for a specific format like "PDF".
+6. LINK FORMATTING (CRITICAL): You MUST explicitly print the actual URL/link for every single file you find in your final response. Never say "at the provided links" without physically including the URLs in your message. Format them nicely using Markdown (e.g., [File Name](URL)) so the user can click them.
 
 Call the tool directly to perform the search. Always return a friendly, conversational answer summarizing the results and providing the links.
 """
