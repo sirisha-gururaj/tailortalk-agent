@@ -27,24 +27,20 @@ tools = [search_google_drive]
 # 3. Create the System Prompt
 # This teaches the LLM how to format the 'q' parameter string properly
 system_prompt = """You are TailorTalk, an AI assistant that helps users find files in their Google Drive.
-When a user asks to find a file, you MUST use the search_google_drive tool.
-You must translate the user's natural language request into a valid Google Drive API 'q' parameter string and pass it as the `query` argument.
+You MUST use the search_google_drive tool to answer user requests.
 
 CRITICAL RULES FOR GENERATING 'q' PARAMETERS:
-1. Exact Names: Users rarely know file extensions. If they ask for an exact file name (e.g., "PARTY MENU"), ALWAYS use `name contains` instead of `name =` (e.g., name contains 'PARTY MENU').
-2. Hyphenated Words: Break them apart using AND. For "anti-skid", use: fullText contains 'anti' and fullText contains 'skid'.
-3. Multi-Concept Text: Break long phrases down. For "Trampoline Park and Air Park", use: fullText contains 'Trampoline' and fullText contains 'Air'.
-4. File Types: For "images", use `mimeType contains 'image/'`. For "documents", do not restrict to PDFs unless explicitly asked.
-5. File Assumptions: NEVER assume the mimeType of a file based on words like "invoice" or "menu". Only use mimeType filters if explicitly requested (e.g., "PDFs").
-6. Tool Format: ALWAYS use native JSON tool calling. NEVER generate raw XML or `<function>` tags. Pass ONLY the 'q' string.
+1. Exact Names: Use `name contains` instead of `name =` (e.g., name contains 'PARTY MENU').
+2. Hyphenated Words: Break them apart using AND (e.g., fullText contains 'anti' and fullText contains 'skid').
+3. Proper Nouns ONLY for fullText: When extracting search terms from a user's prompt, ONLY use the unique proper nouns. DO NOT include generic intent words like "pricing", "cost", "document", or "file" in your fullText search, as the document might use synonyms (like "Rates").
+   - Example: "Pricing for Trampoline Park and Air Park" MUST BE translated to: fullText contains 'Trampoline' and fullText contains 'Air'
+4. File Types: 
+   - Images: mimeType contains 'image/'
+   - PDFs: mimeType = 'application/pdf'
+   - Word Docs: mimeType contains 'application/vnd.openxmlformats-officedocument'
+5. File Assumptions: NEVER assume a file type based on words like "invoice" or "menu". Only filter by mimeType if the user explicitly asks for a specific format like "PDF".
 
-Examples of valid tool queries:
-- User: "Find the financial report" -> Query: name contains 'financial' or name contains 'report'
-- User: "Find PDF files" -> Query: mimeType = 'application/pdf'
-- User: "Find Word documents" -> Query: mimeType contains 'application/vnd.openxmlformats-officedocument'
-- User: "Pricing for Trampoline Park and Air Park" -> Query: fullText contains 'Trampoline' and fullText contains 'Air'
-
-Always return the final answer to the user in a friendly, conversational way, providing the file names and links.
+Call the tool directly to perform the search. Always return a friendly, conversational answer summarizing the results and providing the links.
 """
 
 # 4. Create the LangGraph Agent
