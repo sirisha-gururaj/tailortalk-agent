@@ -25,7 +25,7 @@ def search_google_drive(query: str) -> str:
     The query should be a valid Google Drive API 'q' parameter string.
     Example: name contains 'report' and mimeType = 'application/pdf'
     """
-    print(f"\n🚀 [DEBUG] LLM GENERATED QUERY: {query}\n")
+    print(f"\n[DEBUG] LLM GENERATED QUERY: {query}\n")
     try:
         service = get_drive_service()
         

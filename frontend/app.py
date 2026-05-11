@@ -6,8 +6,8 @@ import os
 BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000/chat")
 
 # Set up the page layout and title
-st.set_page_config(page_title="TailorTalk Drive Agent", page_icon="📁")
-st.title("T) TailorTalk")
+st.set_page_config(page_title="TailorTalk Drive Agent")
+st.title("TailorTalk")
 st.markdown("I can help you search, filter, and discover files in your Google Drive. What are you looking for?")
 
 # Initialize chat history in Streamlit's session state
@@ -39,7 +39,7 @@ if prompt := st.chat_input("Ask me to find a file..."):
                     
                     # NEW: Check if our FastAPI backend caught an error
                     if "error" in data:
-                        bot_reply = f"🚨 **Error from Backend:** {data['error']}"
+                        bot_reply = f"**Error from Backend:** {data['error']}"
                     else:
                         bot_reply = data.get("response", f"Unexpected data received: {data}")
                         
